@@ -1,10 +1,14 @@
 var loadState = {
 
     preload: function(){
+        //images etc
         game.load.image('player', 'assets/player.png');
         game.load.image('bullet', 'assets/bullet.png');
         game.load.image('background', 'assets/background.png');
         game.load.image('enemy', 'assets/enemy.png');
+
+        //audio
+        game.load.audio('laser', 'audio/laser.wav');
     },
 
     create: function(){

@@ -18,7 +18,6 @@ var playState = {
         //Control
         this.cursors = game.input.keyboard.createCursorKeys();
 
-
         //Creating bullets
         this.bullets = game.add.group();
         this.bullets.enableBody = true;
@@ -45,21 +44,24 @@ var playState = {
         this.emitter.makeParticles('enemy');
         this.emitter.gravity = 200;
 
+        //audio
+        this.laser = game.add.audio('laser');
+        
     },
-
+    
     fire: function(){
         if (game.time.now > this.nextFire && this.bullets.countDead() > 0)
         {
             this.nextFire = game.time.now + this.fireRate;
-    
+            
             let bullet = this.bullets.getFirstDead();
-    
+            
             bullet.reset(this.player.x, this.player.y);
             bullet.body.velocity.y = -200;
         }
-    
+        
     },
-
+    
     kill: function(enemy, target){
         this.emitter.x = enemy.x;
         this.emitter.y = enemy.y;
@@ -67,23 +69,23 @@ var playState = {
         enemy.kill();
         target.kill();
     },
-
+    
     update: function() {
         
         //collisions
         game.physics.arcade.collide(this.bullets, this.enemy, this.kill, null, this);
-
+        
         if (this.cursors.left.isDown){
-	        this.player.x -= 2;
+            this.player.x -= 2;
 	    } 
-
+        
 	    if (this.cursors.right.isDown){
-	        this.player.x += 2;
+            this.player.x += 2;
         } 
         
         if(this.cursors.up.isDown){
             this.fire();
+            this.laser.play();
         }
-
     }
 };
