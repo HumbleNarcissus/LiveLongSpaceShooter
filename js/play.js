@@ -44,32 +44,18 @@ var playState = {
         this.emitter.makeParticles('enemy');
         this.emitter.gravity = 200;
 
+        //level data
+        this.numLevels = 3;
+        this.currentLevel = 1;
+        console.log('current level:' + this.currentLevel);
+
+        //loadLevel
+        this.loadLevel();
+
         //audio
         this.laser = game.add.audio('laser');
         
     },
-    
-    fire: function(){
-        if (game.time.now > this.nextFire && this.bullets.countDead() > 0)
-        {
-            this.nextFire = game.time.now + this.fireRate;
-            
-            let bullet = this.bullets.getFirstDead();
-            
-            bullet.reset(this.player.x, this.player.y);
-            bullet.body.velocity.y = -200;
-        }
-        
-    },
-    
-    kill: function(enemy, target){
-        this.emitter.x = enemy.x;
-        this.emitter.y = enemy.y;
-        this.emitter.start(true, 500, null, 100);
-        enemy.kill();
-        target.kill();
-    },
-    
     update: function() {
         
         //collisions
@@ -89,3 +75,4 @@ var playState = {
         }
     }
 };
+

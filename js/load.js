@@ -9,6 +9,9 @@ var loadState = {
 
         //audio
         game.load.audio('laser', 'audio/laser.wav');
+
+        //level data
+        game.load.text('level1', 'levels/level1.json');
     },
 
     create: function(){
@@ -17,7 +20,7 @@ var loadState = {
         //have the game centered horizontally
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
-
+       
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.state.start('play');
     }
