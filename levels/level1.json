@@ -4,17 +4,17 @@
     [
         {
             "time": 1,
-            "x": 1,
-            "key": "enemy"
-        },
-        {
-            "time": 1,
-            "x": 5,
-            "key": "enemy"
-        },
-        {
-            "time": 1,
             "x": 10,
+            "key": "enemy"
+        },
+        {
+            "time": 1,
+            "x": 30,
+            "key": "enemy"
+        },
+        {
+            "time": 1,
+            "x": 50,
             "key": "enemy"
         }
     ]

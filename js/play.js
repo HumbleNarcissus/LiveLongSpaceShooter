@@ -34,10 +34,9 @@ var playState = {
 
 
         //creating enemies
-        this.enemy = game.add.sprite(game.world.centerX, game.world.centerY, 'enemy');
-        this.enemy.scale.setTo(1.5 , 1.5);
-        this.enemy.anchor.setTo(0.5);
-        game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
+        this.enemies = game.add.group()
+        this.enemies.enableBody = true;
+        game.physics.enable(this.enemies, Phaser.Physics.ARCADE);
 
         //effects
         this.emitter = game.add.emitter(0,0,100);
@@ -59,7 +58,7 @@ var playState = {
     update: function() {
         
         //collisions
-        game.physics.arcade.collide(this.bullets, this.enemy, this.kill, null, this);
+        game.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, this);
         
         if (this.cursors.left.isDown){
             this.player.x -= 2;
@@ -72,6 +71,13 @@ var playState = {
         if(this.cursors.up.isDown){
             this.fire();
             this.laser.play();
+        }
+
+        //end level after killing all enemies
+        if(this.enemies.length === 0) {
+            setTimeout(function() {
+                game.state.start('endMenu');
+            }, 2000);
         }
     }
 };
