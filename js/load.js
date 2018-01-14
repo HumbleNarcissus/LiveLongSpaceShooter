@@ -1,27 +1,28 @@
-var loadState = {
-
-    preload: function(){
+import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
+//Load state
+export default class extends Phaser.State {
+    preload() {
         //images etc
-        game.load.image('player', 'assets/player.png');
-        game.load.image('bullet', 'assets/bullet.png');
-        game.load.image('background', 'assets/background.png');
-        game.load.image('enemy', 'assets/enemy.png');
+        this.load.image('player', 'assets/player.png');
+        this.load.image('bullet', 'assets/bullet.png');
+        this.load.image('background', 'assets/background.png');
+        this.load.image('enemy', 'assets/enemy.png');
 
         //audio
-        game.load.audio('laser', 'audio/laser.wav');
+        this.load.audio('laser', 'audio/laser.wav');
 
         //level data
-        game.load.text('level1', 'levels/level1.json');
-    },
+        this.load.text('level1', 'levels/level1.json');
+    }
 
-    create: function(){
+    create() {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         //game.stage.backgroundColor = "#555";
         //have the game centered horizontally
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
        
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.state.start('play');
+        this.physics.startSystem(Phaser.Physics.ARCADE);
+        this.state.start('play');
     }
 }

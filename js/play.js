@@ -1,64 +1,100 @@
+import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
 
-var playState = {
-    create: function() {
+export default class extends Phaser.State {
+    create() {
         //background
-        this.background = this.add.tileSprite(0,0, this.game.world.width,
-            this.game.world.height, 'background');
-        this.background.autoScroll(0,30);
+        const background = this.add.tileSprite(0,0, this.world.width,
+            this.world.height, 'background');
+        background.autoScroll(0,30);
 
         //player
-        this.player = game.add.sprite(game.world.centerX, game.world.centerY+200, 'player');
-        this.player.anchor.setTo(0.5);
+        let player = game.add.sprite(game.world.centerX, game.world.centerY+200, 'player');
+        player.anchor.setTo(0.5);
         //this.player.scale.setTo(3, 3);
-
         //player physics
-        game.physics.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.collideWorldBounds = true;
+        this.physics.enable(player, Phaser.Physics.ARCADE);
+        player.body.collideWorldBounds = true;
+        console.log("hehehe");
 
         //Control
-        this.cursors = game.input.keyboard.createCursorKeys();
+        let cursors = game.input.keyboard.createCursorKeys();
 
         //Creating bullets
-        this.bullets = game.add.group();
-        this.bullets.enableBody = true;
-        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+        let bullets = game.add.group();
+        bullets.enableBody = true;
+        bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
         //Set up the bullets
-        this.bullets.createMultiple(50, 'bullet');
-        this.bullets.setAll('anchor.x', 0.5);
-        this.bullets.setAll('anchor.y', 1);
-        this.bullets.setAll('checkWorldBounds', true);
-        this.bullets.setAll('outOfBoundsKill', true);
-        this.fireRate = 300;
-        this.nextFire = 0;
+        bullets.createMultiple(50, 'bullet');
+        bullets.setAll('anchor.x', 0.5);
+        bullets.setAll('anchor.y', 1);
+        bullets.setAll('checkWorldBounds', true);
+        bullets.setAll('outOfBoundsKill', true);
+        let fireRate = 300;
+        let nextFire = 0;
 
 
         //creating enemies
-        this.enemies = game.add.group()
-        this.enemies.enableBody = true;
-        game.physics.enable(this.enemies, Phaser.Physics.ARCADE);
+        let enemies = this.add.group()
+        enemies.enableBody = true;
+        this.physics.enable(enemies, Phaser.Physics.ARCADE);
 
         //effects
-        this.emitter = game.add.emitter(0,0,100);
-        this.emitter.makeParticles('enemy');
-        this.emitter.gravity = 200;
+        let emitter = this.add.emitter(0,0,100);
+        emitter.makeParticles('enemy');
+        emitter.gravity = 200;
 
         //level data
-        this.numLevels = 3;
-        this.currentLevel = 1;
+        let numLevels = 3;
+        let currentLevel = 1;
         console.log('current level:' + this.currentLevel);
 
         //loadLevel
-        this.loadLevel();
+        //load level from json data
+        let loadLevel = function() {
+        console.log(currentLevel);
+        const levelData = JSON.parse(this.cache.getText('level' + currentLevel));
+        //create enemies from json level data
+    
+        levelData.enemies.forEach( enemy => {
+            enemies.create(50 + Math.random() * 200,
+                           50 + Math.random() * 200,
+                           'enemy')
+        });
+    
+        console.log('enemies', enemies.length)
+    }
 
         //audio
-        this.laser = game.add.audio('laser');
+        let laser = game.add.audio('laser');
         
-    },
-    update: function() {
-        
+    }
+    kill(enemy, target) {
+        emitter.x = enemy.x;
+        emitter.y = enemy.y;
+        emitter.start(true, 500, null, 100);
+        enemy.kill();
+        target.kill();
+        enemies.remove(target);
+    }
+    
+    //player fire
+    fire() {
+        if (time.now > nextFire && bullets.countDead() > 0){
+            nextFire = time.now + fireRate;
+            
+            let bullet = bullets.getFirstDead();
+            
+            bullet.reset(player.x, player.y);
+            bullet.body.velocity.y = -200;
+        }
+    }
+    
+   
+    update() {
         //collisions
-        game.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, this);
+       // this.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, null);
+        console.log("this.player",this.player);
         
         if (this.cursors.left.isDown){
             this.player.x -= 2;
@@ -76,7 +112,7 @@ var playState = {
         //end level after killing all enemies
         if(this.enemies.length === 0) {
             setTimeout(function() {
-                game.state.start('endMenu');
+                this.state.start('endMenu');
             }, 2000);
         }
     }
