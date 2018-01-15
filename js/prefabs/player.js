@@ -1,8 +1,8 @@
 import Bullet from './bullets';
 
 export default class Player extends Phaser.Sprite {
-    constructor({game, x, y, asset, frame, health}){
-        super(game, x, y, asset, frame);
+    constructor({game, x, y, asset, health}){
+        super(game, x, y, asset);
 
         this.game = game;
         this.anchor.setTo(0.5);
@@ -12,9 +12,6 @@ export default class Player extends Phaser.Sprite {
         //physics
         this.game.physics.arcade.enable(this);
         this.body.collideWorldBounds = true;
-        this.game.add.sprite(x, y, asset);
-    }
-
-    update() {
+        this.game.stage.addChild(this);
     }
 }

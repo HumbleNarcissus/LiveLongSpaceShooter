@@ -108138,10 +108138,8 @@ var _class = function (_Phaser$State) {
                 game: this.game,
                 x: this.game.world.centerX,
                 y: this.game.world.centerY + 250,
-                asset: 'player',
-                frame: 1
+                asset: 'player'
             });
-
             //Control
             this.cursors = game.input.keyboard.createCursorKeys();
 
@@ -108223,6 +108221,8 @@ var _class = function (_Phaser$State) {
     }, {
         key: 'update',
         value: function update() {
+            var _this3 = this;
+
             //collisions
             this.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, this);
 
@@ -108241,9 +108241,12 @@ var _class = function (_Phaser$State) {
 
             //end level after killing all enemies
             if (this.enemies.length === 0) {
-                setTimeout(function () {
-                    this.game.state.start('endMenu');
-                }, 2000);
+                var timer = this.game.time.create(this.game, true);
+                timer.add(3000, function () {
+                    _this3.player.destroy();
+                    _this3.game.state.start('endMenu');
+                });
+                timer.start();
             }
         }
     }]);
@@ -108265,8 +108268,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _bullets = __webpack_require__(12);
 
 var _bullets2 = _interopRequireDefault(_bullets);
@@ -108287,12 +108288,11 @@ var Player = function (_Phaser$Sprite) {
             x = _ref.x,
             y = _ref.y,
             asset = _ref.asset,
-            frame = _ref.frame,
             health = _ref.health;
 
         _classCallCheck(this, Player);
 
-        var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, game, x, y, asset, frame));
+        var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, game, x, y, asset));
 
         _this.game = game;
         _this.anchor.setTo(0.5);
@@ -108302,14 +108302,9 @@ var Player = function (_Phaser$Sprite) {
         //physics
         _this.game.physics.arcade.enable(_this);
         _this.body.collideWorldBounds = true;
-        _this.game.add.sprite(x, y, asset);
+        _this.game.stage.addChild(_this);
         return _this;
     }
-
-    _createClass(Player, [{
-        key: 'update',
-        value: function update() {}
-    }]);
 
     return Player;
 }(Phaser.Sprite);

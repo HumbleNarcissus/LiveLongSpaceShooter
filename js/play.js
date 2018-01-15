@@ -13,10 +13,8 @@ export default class extends Phaser.State {
             game: this.game,
             x: this.game.world.centerX,
             y: this.game.world.centerY + 250,
-            asset: 'player',
-            frame: 1
+            asset: 'player'
         });
-        
         //Control
         this.cursors = game.input.keyboard.createCursorKeys();
 
@@ -110,11 +108,15 @@ export default class extends Phaser.State {
             this.laser.play();
         }
 
+    
          //end level after killing all enemies
         if(this.enemies.length === 0) {
-            setTimeout(function() {
+            let timer = this.game.time.create(this.game, true);
+            timer.add(3000, () => {
+                this.player.destroy();
                 this.game.state.start('endMenu');
-            }, 2000);
+            });
+            timer.start();
         }
     }
 };
