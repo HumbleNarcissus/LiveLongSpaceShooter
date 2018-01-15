@@ -108126,76 +108126,79 @@ var _class = function (_Phaser$State) {
         key: 'create',
         value: function create() {
             //background
-            var background = this.add.tileSprite(0, 0, this.world.width, this.world.height, 'background');
-            background.autoScroll(0, 30);
+            this.background = this.add.tileSprite(0, 0, this.world.width, this.world.height, 'background');
+            this.background.autoScroll(0, 30);
 
             //player
-            var player = game.add.sprite(game.world.centerX, game.world.centerY + 200, 'player');
-            player.anchor.setTo(0.5);
+            this.player = this.add.sprite(this.world.centerX, this.world.centerY + 200, 'player');
+            this.player.anchor.setTo(0.5);
             //this.player.scale.setTo(3, 3);
             //player physics
-            this.physics.enable(player, _phaserSplit2.default.Physics.ARCADE);
-            player.body.collideWorldBounds = true;
-            console.log("hehehe");
+            this.physics.enable(this.player, _phaserSplit2.default.Physics.ARCADE);
+            this.player.body.collideWorldBounds = true;
 
             //Control
-            var cursors = game.input.keyboard.createCursorKeys();
+            this.cursors = game.input.keyboard.createCursorKeys();
 
             //Creating bullets
-            var bullets = game.add.group();
-            bullets.enableBody = true;
-            bullets.physicsBodyType = _phaserSplit2.default.Physics.ARCADE;
+            this.bullets = game.add.group();
+            this.bullets.enableBody = true;
+            this.bullets.physicsBodyType = _phaserSplit2.default.Physics.ARCADE;
 
             //Set up the bullets
-            bullets.createMultiple(50, 'bullet');
-            bullets.setAll('anchor.x', 0.5);
-            bullets.setAll('anchor.y', 1);
-            bullets.setAll('checkWorldBounds', true);
-            bullets.setAll('outOfBoundsKill', true);
-            var fireRate = 300;
-            var nextFire = 0;
+            this.bullets.createMultiple(50, 'bullet');
+            this.bullets.setAll('anchor.x', 0.5);
+            this.bullets.setAll('anchor.y', 1);
+            this.bullets.setAll('checkWorldBounds', true);
+            this.bullets.setAll('outOfBoundsKill', true);
+            this.fireRate = 300;
+            this.nextFire = 0;
 
             //creating enemies
-            var enemies = this.add.group();
-            enemies.enableBody = true;
-            this.physics.enable(enemies, _phaserSplit2.default.Physics.ARCADE);
+            this.enemies = this.add.group();
+            this.enemies.enableBody = true;
+            this.physics.enable(this.enemies, _phaserSplit2.default.Physics.ARCADE);
 
             //effects
-            var emitter = this.add.emitter(0, 0, 100);
-            emitter.makeParticles('enemy');
-            emitter.gravity = 200;
+            this.emitter = this.add.emitter(0, 0, 100);
+            this.emitter.makeParticles('enemy');
+            this.emitter.gravity = 200;
 
             //level data
-            var numLevels = 3;
-            var currentLevel = 1;
-            console.log('current level:' + this.currentLevel);
+            this.numLevels = 3;
+            this.currentLevel = 1;
 
             //loadLevel
             //load level from json data
-            var loadLevel = function loadLevel() {
-                console.log(currentLevel);
-                var levelData = JSON.parse(this.cache.getText('level' + currentLevel));
-                //create enemies from json level data
-
-                levelData.enemies.forEach(function (enemy) {
-                    enemies.create(50 + Math.random() * 200, 50 + Math.random() * 200, 'enemy');
-                });
-
-                console.log('enemies', enemies.length);
-            };
+            this.loadLevel();
 
             //audio
-            var laser = game.add.audio('laser');
+            this.laser = game.add.audio('laser');
+        }
+    }, {
+        key: 'loadLevel',
+        value: function loadLevel() {
+            var _this2 = this;
+
+            console.log(this.currentLevel);
+            this.levelData = JSON.parse(this.cache.getText('level' + this.currentLevel));
+            //create enemies from json level data
+
+            this.levelData.enemies.forEach(function (enemy) {
+                _this2.enemies.create(50 + Math.random() * 200, 50 + Math.random() * 200, 'enemy');
+            });
+
+            console.log('enemies', this.enemies.length);
         }
     }, {
         key: 'kill',
         value: function kill(enemy, target) {
-            emitter.x = enemy.x;
-            emitter.y = enemy.y;
-            emitter.start(true, 500, null, 100);
+            this.emitter.x = enemy.x;
+            this.emitter.y = enemy.y;
+            this.emitter.start(true, 500, null, 100);
             enemy.kill();
             target.kill();
-            enemies.remove(target);
+            this.enemies.remove(target);
         }
 
         //player fire
@@ -108203,12 +108206,12 @@ var _class = function (_Phaser$State) {
     }, {
         key: 'fire',
         value: function fire() {
-            if (time.now > nextFire && bullets.countDead() > 0) {
-                nextFire = time.now + fireRate;
+            if (this.time.now > this.nextFire && this.bullets.countDead() > 0) {
+                this.nextFire = this.time.now + this.fireRate;
 
-                var bullet = bullets.getFirstDead();
+                var bullet = this.bullets.getFirstDead();
 
-                bullet.reset(player.x, player.y);
+                bullet.reset(this.player.x, this.player.y);
                 bullet.body.velocity.y = -200;
             }
         }
@@ -108216,8 +108219,7 @@ var _class = function (_Phaser$State) {
         key: 'update',
         value: function update() {
             //collisions
-            // this.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, null);
-            console.log("this.player", this.player);
+            this.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, this);
 
             if (this.cursors.left.isDown) {
                 this.player.x -= 2;
@@ -108235,7 +108237,7 @@ var _class = function (_Phaser$State) {
             //end level after killing all enemies
             if (this.enemies.length === 0) {
                 setTimeout(function () {
-                    this.state.start('endMenu');
+                    this.game.state.start('endMenu');
                 }, 2000);
             }
         }
