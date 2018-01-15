@@ -124,11 +124,11 @@ var _play = __webpack_require__(10);
 
 var _play2 = _interopRequireDefault(_play);
 
-var _menu = __webpack_require__(11);
+var _menu = __webpack_require__(13);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _endMenu = __webpack_require__(12);
+var _endMenu = __webpack_require__(14);
 
 var _endMenu2 = _interopRequireDefault(_endMenu);
 
@@ -108105,6 +108105,10 @@ var _phaserSplit = __webpack_require__(0);
 
 var _phaserSplit2 = _interopRequireDefault(_phaserSplit);
 
+var _player = __webpack_require__(11);
+
+var _player2 = _interopRequireDefault(_player);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -108130,12 +108134,13 @@ var _class = function (_Phaser$State) {
             this.background.autoScroll(0, 30);
 
             //player
-            this.player = this.add.sprite(this.world.centerX, this.world.centerY + 200, 'player');
-            this.player.anchor.setTo(0.5);
-            //this.player.scale.setTo(3, 3);
-            //player physics
-            this.physics.enable(this.player, _phaserSplit2.default.Physics.ARCADE);
-            this.player.body.collideWorldBounds = true;
+            this.player = new _player2.default({
+                game: this.game,
+                x: this.game.world.centerX,
+                y: this.game.world.centerY + 250,
+                asset: 'player',
+                frame: 1
+            });
 
             //Control
             this.cursors = game.input.keyboard.createCursorKeys();
@@ -108262,6 +108267,109 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _bullets = __webpack_require__(12);
+
+var _bullets2 = _interopRequireDefault(_bullets);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Player = function (_Phaser$Sprite) {
+    _inherits(Player, _Phaser$Sprite);
+
+    function Player(_ref) {
+        var game = _ref.game,
+            x = _ref.x,
+            y = _ref.y,
+            asset = _ref.asset,
+            frame = _ref.frame,
+            health = _ref.health;
+
+        _classCallCheck(this, Player);
+
+        var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, game, x, y, asset, frame));
+
+        _this.game = game;
+        _this.anchor.setTo(0.5);
+        _this.health = health;
+        _this.maxhealth = health;
+
+        //physics
+        _this.game.physics.arcade.enable(_this);
+        _this.body.collideWorldBounds = true;
+        _this.game.add.sprite(x, y, asset);
+        return _this;
+    }
+
+    _createClass(Player, [{
+        key: 'update',
+        value: function update() {}
+    }]);
+
+    return Player;
+}(Phaser.Sprite);
+
+exports.default = Player;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Bullet = function (_Phaser$Sprite) {
+    _inherits(Bullet, _Phaser$Sprite);
+
+    function Bullet(_ref) {
+        var game = _ref.game,
+            x = _ref.x,
+            y = _ref.y,
+            asset = _ref.asset;
+
+        _classCallCheck(this, Bullet);
+
+        var _this = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, game, x, y, asset));
+
+        _this.anchor.setTo(0.5);
+        _this.checkWorldBounds = true;
+        _this.outOfBoundsKill = true;
+        return _this;
+    }
+
+    return Bullet;
+}(Phaser.Sprite);
+
+exports.default = Bullet;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _phaserSplit = __webpack_require__(0);
 
 var _phaserSplit2 = _interopRequireDefault(_phaserSplit);
@@ -108303,7 +108411,7 @@ var _class = function (_Phaser$State) {
 exports.default = _class;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108340,7 +108448,7 @@ var _class = function (_Phaser$State) {
         key: 'create',
         value: function create() {
             game.add.text(50, 50, 'End of level.\nPress space to restart!', { fill: '#fff' });
-            this.spaceKey = game.input.keyboard.addKey(_phaserSplit2.default.Keyboard.SPACEBAR);
+            this.spaceKey = this.input.keyboard.addKey(_phaserSplit2.default.Keyboard.SPACEBAR);
             this.spaceKey.onDown.add(this.startGame, this);
         }
     }, {

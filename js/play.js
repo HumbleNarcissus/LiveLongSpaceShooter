@@ -12,12 +12,11 @@ export default class extends Phaser.State {
         this.player = new Player({
             game: this.game,
             x: this.game.world.centerX,
-            y: this.game.world.centerY - 200,
+            y: this.game.world.centerY + 250,
             asset: 'player',
             frame: 1
         });
         
-
         //Control
         this.cursors = game.input.keyboard.createCursorKeys();
 
