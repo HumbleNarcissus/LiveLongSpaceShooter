@@ -1,4 +1,5 @@
 import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
+import Player from './prefabs/player';
 
 export default class extends Phaser.State {
     create(){
@@ -8,12 +9,13 @@ export default class extends Phaser.State {
         this.background.autoScroll(0,30);
 
         //player
-        this.player = this.add.sprite(this.world.centerX, this.world.centerY+200, 'player');
-        this.player.anchor.setTo(0.5);
-        //this.player.scale.setTo(3, 3);
-        //player physics
-        this.physics.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.collideWorldBounds = true;
+        this.player = new Player({
+            game: this.game,
+            x: this.game.world.centerX,
+            y: this.game.world.centerY - 200,
+            asset: 'player',
+            frame: 1
+        });
         
 
         //Control
