@@ -108143,20 +108143,6 @@ var _class = function (_Phaser$State) {
             //Control
             this.cursors = game.input.keyboard.createCursorKeys();
 
-            //Creating bullets
-            this.bullets = game.add.group();
-            this.bullets.enableBody = true;
-            this.bullets.physicsBodyType = _phaserSplit2.default.Physics.ARCADE;
-
-            //Set up the bullets
-            this.bullets.createMultiple(50, 'bullet');
-            this.bullets.setAll('anchor.x', 0.5);
-            this.bullets.setAll('anchor.y', 1);
-            this.bullets.setAll('checkWorldBounds', true);
-            this.bullets.setAll('outOfBoundsKill', true);
-            this.fireRate = 300;
-            this.nextFire = 0;
-
             //creating enemies
             this.enemies = this.add.group();
             this.enemies.enableBody = true;
@@ -108203,28 +108189,13 @@ var _class = function (_Phaser$State) {
             target.kill();
             this.enemies.remove(target);
         }
-
-        //player fire
-
-    }, {
-        key: 'fire',
-        value: function fire() {
-            if (this.time.now > this.nextFire && this.bullets.countDead() > 0) {
-                this.nextFire = this.time.now + this.fireRate;
-
-                var bullet = this.bullets.getFirstDead();
-
-                bullet.reset(this.player.x, this.player.y);
-                bullet.body.velocity.y = -200;
-            }
-        }
     }, {
         key: 'update',
         value: function update() {
             var _this3 = this;
 
             //collisions
-            this.physics.arcade.collide(this.bullets, this.enemies, this.kill, null, this);
+            this.physics.arcade.collide(this.player.bullets, this.enemies, this.kill, null, this);
 
             if (this.cursors.left.isDown) {
                 this.player.x -= 2;
@@ -108235,7 +108206,7 @@ var _class = function (_Phaser$State) {
             }
 
             if (this.cursors.up.isDown) {
-                this.fire();
+                this.player.fire();
                 this.laser.play();
             }
 
@@ -108267,6 +108238,8 @@ exports.default = _class;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _bullets = __webpack_require__(12);
 
@@ -108303,8 +108276,46 @@ var Player = function (_Phaser$Sprite) {
         _this.game.physics.arcade.enable(_this);
         _this.body.collideWorldBounds = true;
         _this.game.stage.addChild(_this);
+
+        //player bullets
+        _this.bullets = game.add.group();
+        _this.bullets.enableBody = true;
+
+        //Set up the bullets
+        _this.bullets.createMultiple(50, 'bullet');
+        _this.fireRate = 300;
+        _this.nextFire = 0;
+
         return _this;
     }
+
+    //player shooting
+
+
+    _createClass(Player, [{
+        key: 'fire',
+        value: function fire() {
+            if (game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+                this.nextFire = game.time.now + this.fireRate;
+
+                var bullet = this.bullets.getFirstExists(false);
+
+                if (!bullet) {
+                    bullet = new _bullets2.default({
+                        game: this.game,
+                        x: this.x,
+                        y: this.y,
+                        asset: 'bullet'
+                    });
+                    this.bullets.add(bullet);
+                } else {
+                    bullet.reset(this.x, this.y);
+                }
+                //bullet speed
+                bullet.body.velocity.y = -200;
+            }
+        }
+    }]);
 
     return Player;
 }(Phaser.Sprite);
