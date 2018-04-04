@@ -1,7 +1,8 @@
 import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
 import Player from './prefabs/player';
+import Enemy from './prefabs/enemy';
 
-export default class extends Phaser.State {
+export default class Play extends Phaser.State {
     create(){
         //background
         this.background = this.add.tileSprite(0,0, this.world.width,
@@ -18,7 +19,7 @@ export default class extends Phaser.State {
         //Control
         this.cursors = game.input.keyboard.createCursorKeys();
 
-        //creating enemies
+        //creating enemies group
         this.enemies = this.add.group()
         this.enemies.enableBody = true;
         this.physics.enable(this.enemies, Phaser.Physics.ARCADE);
@@ -42,18 +43,23 @@ export default class extends Phaser.State {
     }
 
     loadLevel() {
+        //parse level from json
         console.log(this.currentLevel);
         this.levelData = JSON.parse(this.cache.getText('level' + this.currentLevel));
-    //create enemies from json level data
-
+        
+        //create enemies from json level data
         this.levelData.enemies.forEach( enemy => {
-            this.enemies.create(50 + Math.random() * 200,
-                           50 + Math.random() * 200,
-                           'enemy')
+            enemy = new Enemy({
+                game: this.game,
+                x: 50 + Math.random() * 200,
+                y: 50 + Math.random() * 200,
+                asset: 'enemy'
+            });
+            this.enemies.add(enemy);
         });
-
-    console.log('enemies', this.enemies.length)
+        console.log('enemies', this.enemies.length)
     }
+
     kill(enemy, target) {
         this.emitter.x = enemy.x;
         this.emitter.y = enemy.y;

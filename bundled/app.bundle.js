@@ -124,11 +124,11 @@ var _play = __webpack_require__(10);
 
 var _play2 = _interopRequireDefault(_play);
 
-var _menu = __webpack_require__(13);
+var _menu = __webpack_require__(14);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _endMenu = __webpack_require__(14);
+var _endMenu = __webpack_require__(15);
 
 var _endMenu2 = _interopRequireDefault(_endMenu);
 
@@ -108109,6 +108109,10 @@ var _player = __webpack_require__(11);
 
 var _player2 = _interopRequireDefault(_player);
 
+var _enemy = __webpack_require__(13);
+
+var _enemy2 = _interopRequireDefault(_enemy);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -108117,16 +108121,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _class = function (_Phaser$State) {
-    _inherits(_class, _Phaser$State);
+var Play = function (_Phaser$State) {
+    _inherits(Play, _Phaser$State);
 
-    function _class() {
-        _classCallCheck(this, _class);
+    function Play() {
+        _classCallCheck(this, Play);
 
-        return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Play.__proto__ || Object.getPrototypeOf(Play)).apply(this, arguments));
     }
 
-    _createClass(_class, [{
+    _createClass(Play, [{
         key: 'create',
         value: function create() {
             //background
@@ -108143,7 +108147,7 @@ var _class = function (_Phaser$State) {
             //Control
             this.cursors = game.input.keyboard.createCursorKeys();
 
-            //creating enemies
+            //creating enemies group
             this.enemies = this.add.group();
             this.enemies.enableBody = true;
             this.physics.enable(this.enemies, _phaserSplit2.default.Physics.ARCADE);
@@ -108169,14 +108173,20 @@ var _class = function (_Phaser$State) {
         value: function loadLevel() {
             var _this2 = this;
 
+            //parse level from json
             console.log(this.currentLevel);
             this.levelData = JSON.parse(this.cache.getText('level' + this.currentLevel));
+
             //create enemies from json level data
-
             this.levelData.enemies.forEach(function (enemy) {
-                _this2.enemies.create(50 + Math.random() * 200, 50 + Math.random() * 200, 'enemy');
+                enemy = new _enemy2.default({
+                    game: _this2.game,
+                    x: 50 + Math.random() * 200,
+                    y: 50 + Math.random() * 200,
+                    asset: 'enemy'
+                });
+                _this2.enemies.add(enemy);
             });
-
             console.log('enemies', this.enemies.length);
         }
     }, {
@@ -108222,10 +108232,10 @@ var _class = function (_Phaser$State) {
         }
     }]);
 
-    return _class;
+    return Play;
 }(_phaserSplit2.default.State);
 
-exports.default = _class;
+exports.default = Play;
 ;
 
 /***/ }),
@@ -108374,6 +108384,47 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Enemy = function (_Phaser$Sprite) {
+    _inherits(Enemy, _Phaser$Sprite);
+
+    function Enemy(_ref) {
+        var game = _ref.game,
+            x = _ref.x,
+            y = _ref.y,
+            asset = _ref.asset;
+
+        _classCallCheck(this, Enemy);
+
+        var _this = _possibleConstructorReturn(this, (Enemy.__proto__ || Object.getPrototypeOf(Enemy)).call(this, game, x, y, asset));
+
+        _this.anchor.setTo(0.5);
+        _this.checkWorldBounds = true;
+        _this.outOfBoundsKill = true;
+        return _this;
+    }
+
+    return Enemy;
+}(Phaser.Sprite);
+
+exports.default = Enemy;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _phaserSplit = __webpack_require__(0);
@@ -108417,7 +108468,7 @@ var _class = function (_Phaser$State) {
 exports.default = _class;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
