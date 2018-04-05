@@ -5,6 +5,7 @@ export default class Bullet extends Phaser.Sprite {
         this.anchor.setTo(0.5);
         this.checkWorldBounds = true;
         this.outOfBoundsKill = true;
+        
     }
 
 }

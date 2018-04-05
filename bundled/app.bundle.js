@@ -60,14 +60,14 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(7);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Phaser"] = __webpack_require__(8);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
@@ -104,11 +104,53 @@ module.exports = g;
 "use strict";
 
 
-var _pixi = __webpack_require__(3);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Bullet = function (_Phaser$Sprite) {
+    _inherits(Bullet, _Phaser$Sprite);
+
+    function Bullet(_ref) {
+        var game = _ref.game,
+            x = _ref.x,
+            y = _ref.y,
+            asset = _ref.asset;
+
+        _classCallCheck(this, Bullet);
+
+        var _this = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, game, x, y, asset));
+
+        _this.anchor.setTo(0.5);
+        _this.checkWorldBounds = true;
+        _this.outOfBoundsKill = true;
+
+        return _this;
+    }
+
+    return Bullet;
+}(Phaser.Sprite);
+
+exports.default = Bullet;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _pixi = __webpack_require__(4);
 
 var _pixi2 = _interopRequireDefault(_pixi);
 
-var _p = __webpack_require__(5);
+var _p = __webpack_require__(6);
 
 var _p2 = _interopRequireDefault(_p);
 
@@ -116,11 +158,11 @@ var _phaserSplit = __webpack_require__(0);
 
 var _phaserSplit2 = _interopRequireDefault(_phaserSplit);
 
-var _load = __webpack_require__(9);
+var _load = __webpack_require__(10);
 
 var _load2 = _interopRequireDefault(_load);
 
-var _play = __webpack_require__(10);
+var _play = __webpack_require__(11);
 
 var _play2 = _interopRequireDefault(_play);
 
@@ -167,14 +209,14 @@ var Game = function (_Phaser$Game) {
 window.game = new Game();
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(4);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["PIXI"] = __webpack_require__(5);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -7749,14 +7791,14 @@ PIXI.TextureUvs = function()
 }).call(this);
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(6);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["p2"] = __webpack_require__(7);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;/**
@@ -21399,7 +21441,7 @@ World.prototype.raycast = function(result, ray){
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -107827,10 +107869,10 @@ PIXI.canUseNewCanvasBlendModes = function () {
 * "What matters in this life is not what we do but what we do for others, the legacy we leave and the imprint we make." - Eric Meyer
 */
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -108020,7 +108062,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108089,7 +108131,7 @@ var _class = function (_Phaser$State) {
 exports.default = _class;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108105,13 +108147,17 @@ var _phaserSplit = __webpack_require__(0);
 
 var _phaserSplit2 = _interopRequireDefault(_phaserSplit);
 
-var _player = __webpack_require__(11);
+var _player = __webpack_require__(12);
 
 var _player2 = _interopRequireDefault(_player);
 
 var _enemy = __webpack_require__(13);
 
 var _enemy2 = _interopRequireDefault(_enemy);
+
+var _bullets = __webpack_require__(2);
+
+var _bullets2 = _interopRequireDefault(_bullets);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -108147,10 +108193,15 @@ var Play = function (_Phaser$State) {
             //Control
             this.cursors = game.input.keyboard.createCursorKeys();
 
-            //creating enemies group
+            //enemies group
             this.enemies = this.add.group();
             this.enemies.enableBody = true;
             this.physics.enable(this.enemies, _phaserSplit2.default.Physics.ARCADE);
+
+            //enemies bullets
+            this.enemyBullets = this.add.group();
+            this.enemyBullets.enableBody = true;
+            this.physics.enable(this.enemyBullets, _phaserSplit2.default.Physics.ARCADE);
 
             //effects
             this.emitter = this.add.emitter(0, 0, 100);
@@ -108161,7 +108212,6 @@ var Play = function (_Phaser$State) {
             this.numLevels = 3;
             this.currentLevel = 1;
 
-            //loadLevel
             //load level from json data
             this.loadLevel();
 
@@ -108183,11 +108233,11 @@ var Play = function (_Phaser$State) {
                     game: _this2.game,
                     x: 50 + Math.random() * 200,
                     y: 50 + Math.random() * 200,
-                    asset: 'enemy'
+                    asset: 'enemy',
+                    enemyBullets: _this2.enemyBullets
                 });
                 _this2.enemies.add(enemy);
             });
-            console.log('enemies', this.enemies.length);
         }
     }, {
         key: 'kill',
@@ -108200,12 +108250,22 @@ var Play = function (_Phaser$State) {
             this.enemies.remove(target);
         }
     }, {
+        key: 'killPlayer',
+        value: function killPlayer(player, target) {
+            player.kill();
+            target.kill();
+            this.game.state.start('endMenu');
+        }
+    }, {
         key: 'update',
         value: function update() {
             var _this3 = this;
 
             //collisions
             this.physics.arcade.collide(this.player.bullets, this.enemies, this.kill, null, this);
+            this.physics.arcade.collide(this.enemyBullets, this.player, this.killPlayer, null, this);
+
+            console.log(this.enemyBullets);
 
             if (this.cursors.left.isDown) {
                 this.player.x -= 2;
@@ -108219,6 +108279,10 @@ var Play = function (_Phaser$State) {
                 this.player.fire();
                 this.laser.play();
             }
+
+            this.enemies.forEach(function (enemy) {
+                return enemy.update();
+            });
 
             //end level after killing all enemies
             if (this.enemies.length === 0) {
@@ -108239,7 +108303,7 @@ exports.default = Play;
 ;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -108251,7 +108315,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _bullets = __webpack_require__(12);
+var _bullets = __webpack_require__(2);
 
 var _bullets2 = _interopRequireDefault(_bullets);
 
@@ -108333,47 +108397,6 @@ var Player = function (_Phaser$Sprite) {
 exports.default = Player;
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Bullet = function (_Phaser$Sprite) {
-    _inherits(Bullet, _Phaser$Sprite);
-
-    function Bullet(_ref) {
-        var game = _ref.game,
-            x = _ref.x,
-            y = _ref.y,
-            asset = _ref.asset;
-
-        _classCallCheck(this, Bullet);
-
-        var _this = _possibleConstructorReturn(this, (Bullet.__proto__ || Object.getPrototypeOf(Bullet)).call(this, game, x, y, asset));
-
-        _this.anchor.setTo(0.5);
-        _this.checkWorldBounds = true;
-        _this.outOfBoundsKill = true;
-        return _this;
-    }
-
-    return Bullet;
-}(Phaser.Sprite);
-
-exports.default = Bullet;
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -108383,6 +108406,14 @@ exports.default = Bullet;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _bullets = __webpack_require__(2);
+
+var _bullets2 = _interopRequireDefault(_bullets);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -108397,7 +108428,8 @@ var Enemy = function (_Phaser$Sprite) {
         var game = _ref.game,
             x = _ref.x,
             y = _ref.y,
-            asset = _ref.asset;
+            asset = _ref.asset,
+            enemyBullets = _ref.enemyBullets;
 
         _classCallCheck(this, Enemy);
 
@@ -108406,8 +108438,52 @@ var Enemy = function (_Phaser$Sprite) {
         _this.anchor.setTo(0.5);
         _this.checkWorldBounds = true;
         _this.outOfBoundsKill = true;
+        _this.enableBody = true;
+        _this.game.physics.arcade.enable(_this);
+        _this.body.velocity.x = 40;
+        _this.body.collideWorldBounds = true;
+        _this.body.bounce.setTo(1, 1);
+
+        //enemy bullets
+        _this.bullets = enemyBullets;
+
+        //Set up the bullets
+        _this.bullets.createMultiple(50, 'bullet');
+        _this.fireRate = 750;
+        _this.nextFire = 0;
+
         return _this;
     }
+
+    _createClass(Enemy, [{
+        key: 'update',
+        value: function update() {
+            this.fire();
+        }
+    }, {
+        key: 'fire',
+        value: function fire() {
+            if (game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+                this.nextFire = game.time.now + this.fireRate;
+
+                var bullet = this.bullets.getFirstExists(false);
+
+                if (!bullet) {
+                    bullet = new _bullets2.default({
+                        game: this.game,
+                        x: this.x,
+                        y: this.y,
+                        asset: 'bullet'
+                    });
+                    this.bullets.add(bullet);
+                } else {
+                    bullet.reset(this.x, this.y);
+                }
+                //bullet speed
+                bullet.body.velocity.y = 200;
+            }
+        }
+    }]);
 
     return Enemy;
 }(Phaser.Sprite);

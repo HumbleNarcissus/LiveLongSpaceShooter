@@ -1,6 +1,7 @@
 import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
 import Player from './prefabs/player';
 import Enemy from './prefabs/enemy';
+import Bullet from './prefabs/bullets';
 
 export default class Play extends Phaser.State {
     create(){
@@ -19,10 +20,15 @@ export default class Play extends Phaser.State {
         //Control
         this.cursors = game.input.keyboard.createCursorKeys();
 
-        //creating enemies group
-        this.enemies = this.add.group()
+        //enemies group
+        this.enemies = this.add.group();
         this.enemies.enableBody = true;
         this.physics.enable(this.enemies, Phaser.Physics.ARCADE);
+
+        //enemies bullets
+        this.enemyBullets = this.add.group();
+        this.enemyBullets.enableBody = true;
+        this.physics.enable(this.enemyBullets, Phaser.Physics.ARCADE);
 
         //effects
         this.emitter = this.add.emitter(0,0,100);
@@ -33,7 +39,6 @@ export default class Play extends Phaser.State {
         this.numLevels = 3;
         this.currentLevel = 1;
         
-        //loadLevel
         //load level from json data
         this.loadLevel();
 
@@ -53,11 +58,11 @@ export default class Play extends Phaser.State {
                 game: this.game,
                 x: 50 + Math.random() * 200,
                 y: 50 + Math.random() * 200,
-                asset: 'enemy'
+                asset: 'enemy',
+                enemyBullets: this.enemyBullets
             });
             this.enemies.add(enemy);
         });
-        console.log('enemies', this.enemies.length)
     }
 
     kill(enemy, target) {
@@ -68,11 +73,19 @@ export default class Play extends Phaser.State {
         target.kill();
         this.enemies.remove(target);
     }
+
+    killPlayer(player, target) {
+        player.kill();
+        target.kill();
+        this.game.state.start('endMenu');
+    }
       
     update() {
         //collisions
         this.physics.arcade.collide(this.player.bullets, this.enemies, this.kill, null, this);
-        
+        this.physics.arcade.collide(this.enemyBullets, this.player, this.killPlayer, null, this);
+
+
         if (this.cursors.left.isDown){
             this.player.x -= 2;
 	    } 
@@ -86,6 +99,7 @@ export default class Play extends Phaser.State {
             this.laser.play();
         }
 
+        this.enemies.forEach(enemy => enemy.update());
     
          //end level after killing all enemies
         if(this.enemies.length === 0) {
