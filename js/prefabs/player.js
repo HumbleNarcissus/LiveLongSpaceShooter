@@ -50,4 +50,8 @@ export default class Player extends Phaser.Sprite {
             bullet.body.velocity.y = -200;
         }
     }
+
+    loseHealth(){
+        this.health -= 1;
+    }
 }

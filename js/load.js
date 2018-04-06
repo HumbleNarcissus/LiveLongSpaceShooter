@@ -7,6 +7,7 @@ export default class extends Phaser.State {
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('background', 'assets/background.png');
         this.load.image('enemy', 'assets/enemy.png');
+        this.load.image('heart', 'assets/heart.png');
 
         //audio
         this.load.audio('laser', 'audio/laser.wav');

@@ -108104,6 +108104,7 @@ var _class = function (_Phaser$State) {
             this.load.image('bullet', 'assets/bullet.png');
             this.load.image('background', 'assets/background.png');
             this.load.image('enemy', 'assets/enemy.png');
+            this.load.image('heart', 'assets/heart.png');
 
             //audio
             this.load.audio('laser', 'audio/laser.wav');
@@ -108188,10 +108189,19 @@ var Play = function (_Phaser$State) {
                 game: this.game,
                 x: this.game.world.centerX,
                 y: this.game.world.centerY + 250,
-                asset: 'player'
+                asset: 'player',
+                health: 3
             });
-            //Control
+
+            //control
             this.cursors = game.input.keyboard.createCursorKeys();
+
+            //health
+            this.health = this.add.group();
+            for (var i = 0; i < this.player.health; i++) {
+                var heart = this.game.add.sprite(0 + i * 35, 0, 'heart');
+                this.health.add(heart);
+            }
 
             //enemies group
             this.enemies = this.add.group();
@@ -108252,9 +108262,15 @@ var Play = function (_Phaser$State) {
     }, {
         key: 'killPlayer',
         value: function killPlayer(player, target) {
-            player.kill();
+            //check player health
+            player.loseHealth();
             target.kill();
-            this.game.state.start('endMenu');
+            this.health.remove(this.health.getTop());
+            //end game if health <= 0
+            if (player.health <= 0) {
+                player.kill();
+                this.game.state.start('endMenu');
+            }
         }
     }, {
         key: 'update',
@@ -108264,8 +108280,6 @@ var Play = function (_Phaser$State) {
             //collisions
             this.physics.arcade.collide(this.player.bullets, this.enemies, this.kill, null, this);
             this.physics.arcade.collide(this.enemyBullets, this.player, this.killPlayer, null, this);
-
-            console.log(this.enemyBullets);
 
             if (this.cursors.left.isDown) {
                 this.player.x -= 2;
@@ -108388,6 +108402,11 @@ var Player = function (_Phaser$Sprite) {
                 //bullet speed
                 bullet.body.velocity.y = -200;
             }
+        }
+    }, {
+        key: 'loseHealth',
+        value: function loseHealth() {
+            this.health -= 1;
         }
     }]);
 

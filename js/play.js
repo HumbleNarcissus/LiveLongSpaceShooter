@@ -15,11 +15,20 @@ export default class Play extends Phaser.State {
             game: this.game,
             x: this.game.world.centerX,
             y: this.game.world.centerY + 250,
-            asset: 'player'
+            asset: 'player',
+            health: 3
         });
-        //Control
+
+        //control
         this.cursors = game.input.keyboard.createCursorKeys();
 
+        //health
+        this.health = this.add.group();
+        for(let i = 0; i < this.player.health; i++){
+            let heart = this.game.add.sprite(0 + i*35, 0, 'heart');
+            this.health.add(heart);
+        }
+        
         //enemies group
         this.enemies = this.add.group();
         this.enemies.enableBody = true;
@@ -75,9 +84,15 @@ export default class Play extends Phaser.State {
     }
 
     killPlayer(player, target) {
-        player.kill();
+        //check player health
+        player.loseHealth();
         target.kill();
-        this.game.state.start('endMenu');
+        this.health.remove(this.health.getTop());
+        //end game if health <= 0
+        if(player.health <= 0){
+            player.kill();
+            this.game.state.start('endMenu');
+        }
     }
       
     update() {
